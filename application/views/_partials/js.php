@@ -38,7 +38,8 @@
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <!-- AdminLTE for demo purposes -->
 <script src="<?php echo base_url('assets/dist/js/demo.js'); ?>"></script>
-
+<script src="<?php echo base_url('assets/plugins/jQuery/jquery-2.2.3.min.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo base_url().'assets/js/jquery-3.3.1.js'?>"></script>
 <script type="text/javascript">
 	function deleteConfirm(url_action) {
 		//console.log(url_action);
@@ -48,4 +49,80 @@
 			//console.log(url_action);
 		}
 	}
+
+	$("#provinsi").change(function(){
+
+// variabel dari nilai combo box provinsi
+var prov_code = $("#provinsi").val();
+
+// Menggunakan ajax untuk mengirim dan dan menerima data dari server
+$.ajax({
+	url : "<?php echo base_url();?>/lokasi/get_kota",
+	method : "POST",
+	data : {prov_code:prov_code},
+	async : false,
+	dataType : 'json',
+	success: function(data){
+		var html = '';
+		var i;
+
+		for(i=0; i<data.length; i++){
+			html += '<option value='+data[i].kota_code+'>'+data[i].kota+'</option>';
+		}
+		$('#kota').html(html);
+		$('#kota').val('').trigger('change');
+	}
+});
+});
+
+$("#kota").change(function(){
+
+// variabel dari nilai combo box kota
+var kota_code = $("#kota").val();
+
+// Menggunakan ajax untuk mengirim dan dan menerima data dari server
+$.ajax({
+	url : "<?php echo base_url();?>/lokasi/get_kec",
+	method : "POST",
+	data : {kota_code:kota_code},
+	async : false,
+	dataType : 'json',
+	success: function(data){
+		var html = '';
+		var i;
+
+		for(i=0; i<data.length; i++){
+			html += '<option value='+data[i].kec_code+'>'+data[i].kecamatan+'</option>';
+		}
+		$('#kecamatan').html(html);
+		$('#kecamatan').val('').trigger('change');
+	}
+});
+});
+$("#kecamatan").change(function(){
+
+// variabel dari nilai combo box kota
+var kec_code = $("#kecamatan").val();
+
+// Menggunakan ajax untuk mengirim dan dan menerima data dari server
+$.ajax({
+	url : "<?php echo base_url();?>/lokasi/get_desa",
+	method : "POST",
+	data : {kec_code:kec_code},
+	async : false,
+	dataType : 'json',
+	success: function(data){
+		var html = '';
+		var i;
+
+		for(i=0; i<data.length; i++){
+			html += '<option value='+data[i].desa_code+'>'+data[i].desa+'</option>';
+		}
+		$('#desa').html(html);
+		$('#desa').val('').trigger('change');
+	}
+});
+});
+
 </script>
+
